@@ -77,7 +77,7 @@ function DateBadge({ startAt, endAt }: { startAt: string; endAt: string }) {
   )
 }
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').trim()
 const BUCKET = 'event-attachments'
 
 function getPublicUrl(path: string) {
