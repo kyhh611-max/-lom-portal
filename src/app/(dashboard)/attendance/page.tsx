@@ -5,6 +5,7 @@ import { AttendanceTabs } from './attendance-tabs'
 export default async function AttendancePage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  if (!user) { const { redirect } = await import('next/navigation'); redirect('/login') }
 
   const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
 

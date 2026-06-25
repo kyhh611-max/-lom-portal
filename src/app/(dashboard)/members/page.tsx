@@ -6,6 +6,7 @@ import { MembersGrid } from './members-grid'
 export default async function MembersPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  if (!user) { const { redirect } = await import('next/navigation'); redirect('/login') }
 
   const [membersRes, profileRes] = await Promise.all([
     supabase.from('profiles').select('*').order('full_name'),

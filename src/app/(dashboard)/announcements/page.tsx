@@ -10,6 +10,7 @@ import { AnnouncementActions } from './announcement-actions'
 export default async function AnnouncementsPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  if (!user) { const { redirect } = await import('next/navigation'); redirect('/login') }
 
   const [announcementsRes, profileRes] = await Promise.all([
     supabase

@@ -93,6 +93,7 @@ type FullEvent = Event & {
 export default async function SchedulePage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  if (!user) { const { redirect } = await import('next/navigation'); redirect('/login') }
 
   const [eventsRes, profileRes] = await Promise.all([
     supabase
