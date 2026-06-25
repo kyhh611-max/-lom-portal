@@ -33,7 +33,7 @@ export default async function AttendancePage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-900">出欠入力</h2>
         <p className="text-gray-500 mt-1">例会・行事への出欠を登録・確認できます</p>

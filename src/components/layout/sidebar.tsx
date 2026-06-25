@@ -37,22 +37,75 @@ export function Sidebar({ profile }: { profile: Profile | null }) {
   }
 
   return (
-    <aside className="w-64 h-screen flex-shrink-0 bg-white border-r flex flex-col overflow-y-auto">
-      <div className="p-6">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-sm">JC</span>
-          </div>
-          <div>
-            <h1 className="font-bold text-gray-900 leading-tight">LOMポータル</h1>
-            <p className="text-xs text-gray-500">青年会議所</p>
+    <>
+      {/* ── デスクトップ用サイドバー (md以上) ── */}
+      <aside className="hidden md:flex w-64 h-screen flex-shrink-0 bg-white border-r flex-col overflow-y-auto">
+        <div className="p-6">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-sm">JC</span>
+            </div>
+            <div>
+              <h1 className="font-bold text-gray-900 leading-tight">LOMポータル</h1>
+              <p className="text-xs text-gray-500">青年会議所</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <Separator />
+        <Separator />
 
-      <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1">
+          {navItems.map((item) => {
+            const Icon = item.icon
+            const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                  isActive
+                    ? 'bg-blue-50 text-blue-700'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                )}
+              >
+                <Icon className="w-4 h-4 flex-shrink-0" />
+                {item.label}
+              </Link>
+            )
+          })}
+        </nav>
+
+        <Separator />
+
+        <div className="p-4 space-y-3">
+          {profile && (
+            <div className="flex items-center gap-3 px-1">
+              <Avatar className="w-8 h-8">
+                <AvatarFallback className="bg-blue-100 text-blue-700 text-xs font-medium">
+                  {profile.full_name.slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">{profile.full_name}</p>
+                <p className="text-xs text-gray-500">{profile.role === 'admin' ? '常任理事' : 'メンバー'}</p>
+              </div>
+            </div>
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50"
+            onClick={handleSignOut}
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            ログアウト
+          </Button>
+        </div>
+      </aside>
+
+      {/* ── モバイル用ボトムナビ (md未満) ── */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t flex items-stretch">
         {navItems.map((item) => {
           const Icon = item.icon
           const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
@@ -61,45 +114,23 @@ export function Sidebar({ profile }: { profile: Profile | null }) {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                isActive
-                  ? 'bg-blue-50 text-blue-700'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                'flex-1 flex flex-col items-center justify-center gap-0.5 py-2 transition-colors',
+                isActive ? 'text-blue-600' : 'text-gray-500'
               )}
             >
-              <Icon className="w-4 h-4 flex-shrink-0" />
-              {item.label}
+              <Icon className={cn('w-5 h-5', isActive ? 'text-blue-600' : 'text-gray-400')} />
+              <span className="text-[10px] font-medium leading-none">{item.label}</span>
             </Link>
           )
         })}
-      </nav>
-
-      <Separator />
-
-      <div className="p-4 space-y-3">
-        {profile && (
-          <div className="flex items-center gap-3 px-1">
-            <Avatar className="w-8 h-8">
-              <AvatarFallback className="bg-blue-100 text-blue-700 text-xs font-medium">
-                {profile.full_name.slice(0, 2)}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">{profile.full_name}</p>
-              <p className="text-xs text-gray-500">{profile.role === 'admin' ? '常任理事' : 'メンバー'}</p>
-            </div>
-          </div>
-        )}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50"
+        <button
           onClick={handleSignOut}
+          className="flex-1 flex flex-col items-center justify-center gap-0.5 py-2 text-gray-500"
         >
-          <LogOut className="w-4 h-4 mr-2" />
-          ログアウト
-        </Button>
-      </div>
-    </aside>
+          <LogOut className="w-5 h-5 text-gray-400" />
+          <span className="text-[10px] font-medium leading-none">ログアウト</span>
+        </button>
+      </nav>
+    </>
   )
 }

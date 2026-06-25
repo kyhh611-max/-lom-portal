@@ -110,7 +110,7 @@ export default async function SchedulePage() {
   const past = events.filter((e) => new Date(e.end_at) < now)
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">スケジュール</h2>
@@ -148,9 +148,9 @@ function EventList({ title, events, isAdmin, isPast }: {
 
           return (
             <Card key={event.id} className={isPast ? 'opacity-60' : ''}>
-              <CardContent className="p-5">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex gap-4 flex-1 min-w-0">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex gap-3 flex-1 min-w-0">
                     {/* 日付バッジ */}
                     <DateBadge startAt={event.start_at} endAt={event.end_at} />
 

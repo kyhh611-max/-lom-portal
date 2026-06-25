@@ -92,31 +92,33 @@ export function AttendanceTabs({ events, members, attendanceRecords, currentUser
       <TabsContent value="input">
         <div className="space-y-4">
           {isAdmin && (
-            <div className="flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg p-3">
               <span className="text-sm font-medium text-blue-700 flex-shrink-0">メンバーを選択:</span>
-              <Select
-                value={selectedMemberId}
-                onValueChange={(v) => setSelectedMemberId(v ?? currentUserId)}
-              >
-                <SelectTrigger className="w-56 bg-white">
-                  <SelectValue>
-                    {members.find((m) => m.id === selectedMemberId)?.full_name ?? ''}
-                    {selectedMemberId === currentUserId ? '（自分）' : ''}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {members.map((m) => (
-                    <SelectItem key={m.id} value={m.id}>
-                      {m.full_name}{m.id === currentUserId ? '（自分）' : ''}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {targetMember && selectedMemberId !== currentUserId && (
-                <Badge variant="outline" className="text-blue-700 border-blue-300">
-                  {targetMember.full_name}の出欠を編集中
-                </Badge>
-              )}
+              <div className="flex items-center gap-2 flex-wrap">
+                <Select
+                  value={selectedMemberId}
+                  onValueChange={(v) => setSelectedMemberId(v ?? currentUserId)}
+                >
+                  <SelectTrigger className="w-full sm:w-56 bg-white">
+                    <SelectValue>
+                      {members.find((m) => m.id === selectedMemberId)?.full_name ?? ''}
+                      {selectedMemberId === currentUserId ? '（自分）' : ''}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {members.map((m) => (
+                      <SelectItem key={m.id} value={m.id}>
+                        {m.full_name}{m.id === currentUserId ? '（自分）' : ''}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {targetMember && selectedMemberId !== currentUserId && (
+                  <Badge variant="outline" className="text-blue-700 border-blue-300">
+                    {targetMember.full_name}の出欠を編集中
+                  </Badge>
+                )}
+              </div>
             </div>
           )}
 
